@@ -15,6 +15,7 @@
  */
 package net.kaczmarzyk.spring.data.jpa;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -62,6 +63,9 @@ public class Customer {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registrationDate;
 
+    @JsonFormat(pattern = "yyyy-MM-ddTHH:MM:SS")
+    private LocalDateTime localRegistrationDateTime;
+
     private Integer weight;
     
     private int weightInt;
@@ -85,12 +89,13 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, Gender gender, Date registrationDate, String street) {
+    public Customer(String firstName, String lastName, Gender gender, Date registrationDate, LocalDateTime localRegistrationDateTime, String street) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.genderAsString = gender;
         this.registrationDate = registrationDate;
+        this.localRegistrationDateTime = localRegistrationDateTime;
         this.address.setStreet(street);
     }
 
@@ -123,6 +128,8 @@ public class Customer {
         return registrationDate;
     }
 
+    public LocalDateTime getLocalRegistrationDateTime() { return localRegistrationDateTime; }
+
     public Address getAddress() {
         return address;
     }
@@ -133,6 +140,10 @@ public class Customer {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public void setLocalRegistrationDateTime(LocalDateTime localRegistrationDateTime) {
+        this.localRegistrationDateTime = localRegistrationDateTime;
     }
 
     /**

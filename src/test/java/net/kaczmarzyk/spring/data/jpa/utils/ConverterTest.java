@@ -17,6 +17,7 @@ package net.kaczmarzyk.spring.data.jpa.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.test.context.TestPropertySource;
 
 
 public class ConverterTest {
@@ -39,6 +41,7 @@ public class ConverterTest {
 	public ExpectedException expected = ExpectedException.none();
 	
 	Converter converter = Converter.withDateFormat("yyyy-MM-dd", OnTypeMismatch.EMPTY_RESULT);
+	Converter converterLocalDateTime = Converter.withDateFormat("yyyy[-MM][-dd]['T'HH][:mm][:ss]", OnTypeMismatch.EMPTY_RESULT);
 	
 	
 	@Test
@@ -49,6 +52,25 @@ public class ConverterTest {
 			.isWithinMonth(3)
 			.isWithinDayOfMonth(1)
 			.isWithinYear(2015);
+	}
+
+	@Test
+	public void convertsToLocalDateTime() {
+		LocalDateTime converted = converterLocalDateTime.convert("2015-03-01", LocalDateTime.class);
+
+		assertThat(converted)
+				.isEqualByComparingTo(LocalDateTime.of(2015,03,01, 0, 0));
+	}
+
+	@Test
+	public void convertsToMultipleLocalDateTime() {
+		List<LocalDateTime> converted = converterLocalDateTime.convert(Arrays.asList("2015-03-01", "2015-04-02T14:12:33", "2015-04-02T14:12"), LocalDateTime.class);
+
+		assertThat(converted.get(0))
+				.isEqualByComparingTo(LocalDateTime.of(2015,03,01, 0, 0));
+
+		assertThat(converted.get(1))
+				.isEqualByComparingTo(LocalDateTime.of(2015,04,02, 14, 12, 33));
 	}
 	
 	@Test

@@ -17,6 +17,10 @@ package net.kaczmarzyk.spring.data.jpa.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -74,6 +78,7 @@ public class Converter {
 	}
 	
 	private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+	private static final String DEFAULT_LOCAL_DATE_TIME_FORMAT = "yyyy[-MM][-dd]['T'HH][:mm][:ss]";
 
 	public static final Converter DEFAULT = Converter.withDateFormat(DEFAULT_DATE_FORMAT, OnTypeMismatch.EMPTY_RESULT);
 	
@@ -92,6 +97,8 @@ public class Converter {
 		}
 		else if (expectedClass.isAssignableFrom(Date.class)) {
 			return (T) convertToDate(value);
+		} else if (expectedClass.isAssignableFrom(LocalDateTime.class)) {
+			return (T) convertToLocalDateTime(value);
 		}
 		else if (expectedClass.isAssignableFrom(Boolean.class) || expectedClass.isAssignableFrom(boolean.class)) {
 			return (T) convertToBoolean(value);
@@ -143,6 +150,20 @@ public class Converter {
 		try {
 			return new SimpleDateFormat(dateFormat).parse(value);
 		} catch (ParseException e) {
+			throw new ValueRejectedException(value, "invalid date, expected format: " + dateFormat);
+		}
+	}
+
+	public LocalDateTime convertToLocalDateTime(String value) {
+		try {
+			DateTimeFormatter dateTimeFormatter =
+					new DateTimeFormatterBuilder().appendPattern(dateFormat)
+							.parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+							.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+							.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+							.toFormatter();
+			return LocalDateTime.parse(value, dateTimeFormatter);
+		} catch (Exception e) {
 			throw new ValueRejectedException(value, "invalid date, expected format: " + dateFormat);
 		}
 	}

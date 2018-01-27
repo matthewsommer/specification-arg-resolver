@@ -23,6 +23,7 @@ import net.kaczmarzyk.spring.data.jpa.CustomerRepository;
 import net.kaczmarzyk.spring.data.jpa.domain.DateBetween;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThan;
 import net.kaczmarzyk.spring.data.jpa.domain.LessThan;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 import org.junit.Test;
@@ -46,6 +47,14 @@ public class DateE2eTest extends E2eTestBase {
 		@ResponseBody
 		public Object findCustomersRegisteredBefore(
 				@Spec(path="registrationDate", params="registeredBefore", config="dd-MM-yyyy", spec=LessThan.class) Specification<Customer> spec) {
+
+			return customerRepo.findAll(spec);
+		}
+
+		@RequestMapping(value = "/customers", params = "localRegisteredBefore")
+		@ResponseBody
+		public Object findCustomersRegisteredLocalDateTimeBefore(
+				@Spec(path="localRegistrationDateTime", params="localRegisteredBefore", config="yyyy-MM-dd'T'HH:mm", spec=LessThanOrEqual.class) Specification<Customer> spec) {
 
 			return customerRepo.findAll(spec);
 		}
@@ -78,6 +87,18 @@ public class DateE2eTest extends E2eTestBase {
 			.andExpect(jsonPath("$[1].firstName").value("Moe"))
 			.andExpect(jsonPath("$[2]").doesNotExist());
 	}
+
+	@Test
+	public void findsByLocalDateTimeBeforeWithCustomDateFormat() throws Exception {
+		mockMvc.perform(get("/customers")
+				.param("localRegisteredBefore", "2014-03-15T23:00")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").isArray())
+				.andExpect(jsonPath("$[0].firstName").value("Homer"))
+				.andExpect(jsonPath("$[1].firstName").value("Moe"))
+				.andExpect(jsonPath("$[2]").doesNotExist());
+	}
 	
 	@Test
 	public void findsByDateBetween() throws Exception {
@@ -92,6 +113,21 @@ public class DateE2eTest extends E2eTestBase {
 			.andExpect(jsonPath("$[2].firstName").value("Lisa"))
 			.andExpect(jsonPath("$[3].firstName").value("Ned"))
 			.andExpect(jsonPath("$[4]").doesNotExist());
+	}
+
+	@Test
+	public void findsByLocalDateTimeBetween() throws Exception {
+		mockMvc.perform(get("/customers")
+				.param("registeredAfter", "2014-03-16")
+				.param("registeredBefore", "2014-03-30")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").isArray())
+				.andExpect(jsonPath("$[0].firstName").value("Marge"))
+				.andExpect(jsonPath("$[1].firstName").value("Bart"))
+				.andExpect(jsonPath("$[2].firstName").value("Lisa"))
+				.andExpect(jsonPath("$[3].firstName").value("Ned"))
+				.andExpect(jsonPath("$[4]").doesNotExist());
 	}
 	
 	@Test

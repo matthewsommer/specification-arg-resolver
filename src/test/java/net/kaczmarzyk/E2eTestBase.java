@@ -51,16 +51,18 @@ public abstract class E2eTestBase extends IntegrationTestBase {
         homerSimpson = customer("Homer", "Simpson")
         		.nickName("Homie")
         		.registrationDate(2014, 03, 15)
+						.localRegistrationDateTime(2014, 03, 15, 0, 0)
         		.gender(MALE).street("Evergreen Terrace")
         		.orders("Duff Beer", "Donuts", "Pizza")
         		.badges("Beef Eater", "Hard Drinker")
         		.build(em);
-        margeSimpson = customer("Marge", "Simpson").registrationDate(2014, 03, 20).gender(FEMALE).street("Evergreen Terrace").build(em);
-        bartSimpson = customer("Bart", "Simpson").nickName("El Barto").registrationDate(2014, 03, 25).gender(MALE).street("Evergreen Terrace").build(em);
-        lisaSimpson = customer("Lisa", "Simpson").registrationDate(2014, 03, 30).gender(FEMALE).street("Evergreen Terrace").build(em);
-        maggieSimpson = customer("Maggie", "Simpson").registrationDate(2014, 03, 31).gender(FEMALE).street("Evergreen Terrace").build(em);
+        margeSimpson = customer("Marge", "Simpson").registrationDate(2014, 03, 20).localRegistrationDateTime(2014, 03, 20, 12, 22).gender(FEMALE).street("Evergreen Terrace").build(em);
+        bartSimpson = customer("Bart", "Simpson").nickName("El Barto").registrationDate(2014, 03, 25).localRegistrationDateTime(2014, 03, 25, 12, 22).gender(MALE).street("Evergreen Terrace").build(em);
+        lisaSimpson = customer("Lisa", "Simpson").registrationDate(2014, 03, 30).localRegistrationDateTime(2014, 03, 30, 0, 0).gender(FEMALE).street("Evergreen Terrace").build(em);
+        maggieSimpson = customer("Maggie", "Simpson").registrationDate(2014, 03, 31).localRegistrationDateTime(2014, 03, 31, 0, 0).gender(FEMALE).street("Evergreen Terrace").build(em);
         moeSzyslak = customer("Moe", "Szyslak")
         		.registrationDate(2014, 03, 15)
+						.localRegistrationDateTime(2014, 03, 15, 0, 0)
         		.gender(MALE).street("Unknown")
         		.orders("Duff Beer")
         		.badges("Suicide Attempt", "Depression", "Troll Face")
