@@ -78,7 +78,6 @@ public class Converter {
 	}
 	
 	private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-	private static final String DEFAULT_LOCAL_DATE_TIME_FORMAT = "yyyy[-MM][-dd]['T'HH][:mm][:ss]";
 
 	public static final Converter DEFAULT = Converter.withDateFormat(DEFAULT_DATE_FORMAT, OnTypeMismatch.EMPTY_RESULT);
 	

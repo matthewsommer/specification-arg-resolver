@@ -22,6 +22,7 @@ import net.kaczmarzyk.spring.data.jpa.Customer;
 import net.kaczmarzyk.spring.data.jpa.CustomerRepository;
 import net.kaczmarzyk.spring.data.jpa.domain.DateBetween;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThan;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.LessThan;
 import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -54,8 +55,7 @@ public class DateE2eTest extends E2eTestBase {
 		@RequestMapping(value = "/customers", params = "localRegisteredBefore")
 		@ResponseBody
 		public Object findCustomersRegisteredLocalDateTimeBefore(
-				@Spec(path="localRegistrationDateTime", params="localRegisteredBefore", config="yyyy-MM-dd'T'HH:mm", spec=LessThanOrEqual.class) Specification<Customer> spec) {
-
+				@Spec(path="localRegistrationDateTime", params="localRegisteredBefore", config="dd-MM-yyyy'T'HH:mm", spec=LessThan.class) Specification<Customer> spec) {
 			return customerRepo.findAll(spec);
 		}
 		
@@ -91,7 +91,7 @@ public class DateE2eTest extends E2eTestBase {
 	@Test
 	public void findsByLocalDateTimeBeforeWithCustomDateFormat() throws Exception {
 		mockMvc.perform(get("/customers")
-				.param("localRegisteredBefore", "2014-03-15T23:00")
+				.param("localRegisteredBefore", "15-03-2014T20:00")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").isArray())

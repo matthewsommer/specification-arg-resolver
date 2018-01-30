@@ -63,7 +63,6 @@ public class Customer {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registrationDate;
 
-    @JsonFormat(pattern = "yyyy-MM-ddTHH:MM:SS")
     private LocalDateTime localRegistrationDateTime;
 
     private Integer weight;

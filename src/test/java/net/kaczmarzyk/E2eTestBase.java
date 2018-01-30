@@ -51,7 +51,7 @@ public abstract class E2eTestBase extends IntegrationTestBase {
         homerSimpson = customer("Homer", "Simpson")
         		.nickName("Homie")
         		.registrationDate(2014, 03, 15)
-						.localRegistrationDateTime(2014, 03, 15, 0, 0)
+						.localRegistrationDateTime(2014, 03, 15, 9, 0)
         		.gender(MALE).street("Evergreen Terrace")
         		.orders("Duff Beer", "Donuts", "Pizza")
         		.badges("Beef Eater", "Hard Drinker")
@@ -62,7 +62,7 @@ public abstract class E2eTestBase extends IntegrationTestBase {
         maggieSimpson = customer("Maggie", "Simpson").registrationDate(2014, 03, 31).localRegistrationDateTime(2014, 03, 31, 0, 0).gender(FEMALE).street("Evergreen Terrace").build(em);
         moeSzyslak = customer("Moe", "Szyslak")
         		.registrationDate(2014, 03, 15)
-						.localRegistrationDateTime(2014, 03, 15, 0, 0)
+						.localRegistrationDateTime(2014, 03, 15, 23, 0)
         		.gender(MALE).street("Unknown")
         		.orders("Duff Beer")
         		.badges("Suicide Attempt", "Depression", "Troll Face")
